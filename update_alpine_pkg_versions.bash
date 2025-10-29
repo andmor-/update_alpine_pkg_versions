@@ -57,10 +57,12 @@ for package in "${PACKAGES[@]}"; do
 
     pkg_declaration=$(cat Dockerfile |grep -o -e $NAME=[^[:space:]]*)
     pkg_v_var=${pkg_declaration#*=*}
-    pkg_v_var=${pkg_v_var/$/}
-    pkg_v_var=${pkg_v_var/\{/}
-    pkg_v_var=${pkg_v_var/\}/}
-    pkg_v_var=${pkg_v_var//\"/}
+
+    if [[ "$pkg_v_var" =~ \"\$\{([a-zA-Z_][a-zA-Z0-9_]*)\}\" ]]; then
+      # The captured group (the variable name) is stored in the BASH_REMATCH array at index 1
+      pkg_v_var="${BASH_REMATCH[1]}"
+    fi
+
     # shellcheck disable=SC2001
     DOCKERFILE_CONTENT=$(echo "$DOCKERFILE_CONTENT" | sed "s/$pkg_v_var=.*$/$pkg_v_var=$VERSION/")
 
