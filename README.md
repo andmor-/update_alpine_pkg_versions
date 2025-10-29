@@ -1,2 +1,3 @@
 # update_alpine_pkg_versions
-A Script to auto-update Alpine package versions on an existing dockerfile
+
+This script automates the process of fixing broken Alpine package versions in a Dockerfile by extracting the latest versions from the build output.
