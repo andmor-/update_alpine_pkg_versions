@@ -57,7 +57,10 @@ for package in "${PACKAGES[@]}"; do
 
     pkg_declaration=$(cat Dockerfile |grep -o -e $NAME=[^[:space:]]*)
     pkg_v_var=${pkg_declaration#*=*}
-    pkg_v_var=${pkg_v_var:1}
+    pkg_v_var=${pkg_v_var/$/}
+    pkg_v_var=${pkg_v_var/\{/}
+    pkg_v_var=${pkg_v_var/\}/}
+    pkg_v_var=${pkg_v_var//\"/}
     # shellcheck disable=SC2001
     DOCKERFILE_CONTENT=$(echo "$DOCKERFILE_CONTENT" | sed "s/$pkg_v_var=.*$/$pkg_v_var=$VERSION/")
 
