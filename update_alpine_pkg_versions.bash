@@ -58,7 +58,7 @@ for package in "${PACKAGES[@]}"; do
     pkg_declaration=$(cat Dockerfile |grep -o -e $NAME=[^[:space:]]*)
     pkg_v_var=${pkg_declaration#*=*}
 
-    if [[ "$pkg_v_var" =~ \"\$\{([a-zA-Z_][a-zA-Z0-9_]*)\}\" ]]; then
+    if [[ "$pkg_v_var" =~ \"\$\{?([a-zA-Z0-9_-]*)\}?\" ]]; then
       # The captured group (the variable name) is stored in the BASH_REMATCH array at index 1
       pkg_v_var="${BASH_REMATCH[1]}"
     fi
